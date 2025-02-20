@@ -1,23 +1,23 @@
+'use client'
 import { useState } from 'react'
 
+// Define the message type
 type Message = {
   text: string
   sender: 'user' | 'bot'
 }
 
-export default function Home() {
+const Home: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([])
-  const [input, setInput] = useState<string>('')
+  const [input, setInput] = useState('')
 
-  // Handle sending a message
-  const sendMessage = (): void => {
+  const sendMessage = () => {
     if (!input.trim()) return
 
     const newMessage: Message = { text: input, sender: 'user' }
-    setMessages((prev) => [...prev, newMessage]) // Update chat history
-    setInput('') // Clear input field
+    setMessages([...messages, newMessage])
+    setInput('')
 
-    // Placeholder response from bot
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
@@ -28,7 +28,6 @@ export default function Home() {
 
   return (
     <div className='flex flex-col h-screen bg-gray-100'>
-      {/* Chat Container */}
       <div className='flex-1 overflow-y-auto p-4'>
         {messages.map((msg, index) => (
           <div
@@ -44,7 +43,6 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Chat Input */}
       <div className='p-4 bg-white border-t'>
         <div className='flex'>
           <input
@@ -53,7 +51,7 @@ export default function Home() {
             placeholder='Type a message...'
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && sendMessage()} // Replaced deprecated onKeyPress
+            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
           />
           <button
             onClick={sendMessage}
@@ -66,3 +64,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home
